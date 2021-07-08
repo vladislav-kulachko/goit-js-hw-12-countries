@@ -1,14 +1,22 @@
 {{#each this}}
 <article class="country-card__box">
+
 <h1 class="country-card__box-name" >{{name}}</h1>
-<img src="{{flag}}" alt="флаг страны {{name}}">
-<p class="country-card__box-capital">Capital:{{capital}}</p>
-<p class="country-card__box-population">Population:{{population}}</p>
-<ul class="country-card__box-languages">Languages:
-    {{#each languages}}
-            <li class="country-card__box-languages-item">{{name}}</li>
-          {{/each}}
-</ul>
+
+<div class="country-card__box-info" >
+  <div class="country-card__box-infotext" >
+  
+    <p class="country-card__box-capital">Capital: {{capital}}</p>
+    <p class="country-card__box-population">Population: {{population}}</p>
+    <ul class="country-card__box-languages">Languages: 
+        {{#each languages}}
+                <li class="country-card__box-languages-item">{{name}}</li>
+              {{/each}}
+    </ul>
+  </div>
+  <img class="country-card__box-img" src="{{flag}}" alt="флаг страны {{name}}" width="400" >
+</div>
+
 <article/>
 {{/each}}
 

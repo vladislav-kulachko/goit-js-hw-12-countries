@@ -14,18 +14,23 @@ findInput.addEventListener('input', debounce(inputHandler, 500));
 countriesFoundContainer.addEventListener('click', countryListClick);
 
 function inputHandler(e) {
+  if (e.target.value === '') {
+    countriesFoundContainer.innerHTML = '';
+    countryCard.innerHTML = '';
+  }
+
   if (e.target.value) {
     fetchCountry(e.target.value)
       .then(countries => {
         if (countries.length === 1) {
-          parceMarkupCountryCard(countries);
+          parseMarkupCountryCard(countries);
           countriesFoundContainer.innerHTML = '';
         }
         return countries;
       })
       .then(countries => {
         if (countries.length > 1 && countries.length <= 10) {
-          parceMarkupFoundCountries(countries);
+          parseMarkupFoundCountries(countries);
           countryCard.innerHTML = '';
         }
         return countries;
@@ -33,34 +38,36 @@ function inputHandler(e) {
       .then(countries => {
         if (countries.length >= 11) {
           alert({
-            text: 'Слишком большое колличество стран. Сделайте запрос более специфичным.',
+            text: 'Найдено cлишком большое колличество стран. Сделайте запрос более специфичным.',
           });
           countriesFoundContainer.innerHTML = '';
           countryCard.innerHTML = '';
         }
         return countries;
       })
-      .catch(() => {
-        alert({
-          text: 'Страна не найдена!',
-        });
-        countriesFoundContainer.innerHTML = '';
-        countryCard.innerHTML = '';
+      .then(countries => {
+        if (countries.status === 404) {
+          alert({
+            text: 'Страна не найдена!',
+          });
+          countriesFoundContainer.innerHTML = '';
+          countryCard.innerHTML = '';
+        }
       });
   }
 }
 
 function countryListClick(e) {
   if (e.target.classList.contains('found-countries-list__item')) {
-    fetchCountry(e.target.textContent).then(parceMarkupCountryCard);
+    fetchCountry(e.target.textContent).then(parseMarkupCountryCard);
   }
 }
 
-function parceMarkupCountryCard(countries) {
+function parseMarkupCountryCard(countries) {
   countryCard.innerHTML = createCountryCard(countries);
 }
 
-function parceMarkupFoundCountries(countries) {
+function parseMarkupFoundCountries(countries) {
   countriesFoundContainer.innerHTML = createMarkupFoundCountries(countries);
 }
 
